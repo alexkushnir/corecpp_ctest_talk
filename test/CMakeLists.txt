@@ -13,6 +13,8 @@ include(FetchContent)
 FetchContent_Declare(cxxopts GIT_REPOSITORY https://github.com/jarro2783/cxxopts.git GIT_TAG master)
 FetchContent_MakeAvailable(cxxopts)
 
+enable_testing()
+
 add_executable(${NOFRAMEWORK_TARGET} noframework.cpp)
 
 add_custom_command(TARGET ${NOFRAMEWORK_TARGET} POST_BUILD  
