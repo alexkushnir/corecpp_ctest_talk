@@ -22,7 +22,7 @@ protected:
 	static constexpr RemoteLogMessage::LogLevel m_logLevel{ RemoteLogMessage::LogLevel::DebugLevel };
 };
 
-TEST_F(RemoteMessageTest, TextTruncation)
+TEST_F(RemoteMessageTest, gtest_TextTruncation)
 {
 	// 104 Symbols
 	const std::string testString{ "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz" };
@@ -34,7 +34,7 @@ TEST_F(RemoteMessageTest, TextTruncation)
 	ASSERT_EQ(rlm.GetLogMessageLength(), expectedResult.size());
 }
 
-TEST_F(RemoteMessageTest, VariadicArguments)
+TEST_F(RemoteMessageTest, gtest_VariadicArguments)
 {
 	std::tuple<std::int32_t, std::string, char> testTuple = std::make_tuple(123, "A string", 'x');
 	std::stringstream expectedResultStream;

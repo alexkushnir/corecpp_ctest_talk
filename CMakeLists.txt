@@ -6,4 +6,7 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 
 project(corecpp-ctest-talk)
 
+add_subdirectory(src)
 add_subdirectory(test)
+
+enable_testing()

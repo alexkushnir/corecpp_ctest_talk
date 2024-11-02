@@ -22,42 +22,7 @@ private:
 	static constexpr RemoteLogMessage::LogLevel m_logLevel{ RemoteLogMessage::LogLevel::DebugLevel };
 };
 
-TEST_CASE_METHOD(RemoteMessageTest, "EmptyMessage", "RemoteMessageTest")
-{
-	const std::string testString{ "" };
-
-	auto rlm = CreateLogMessage(testString);
-	VerifyMetaData(rlm);
-
-	CHECK(rlm.GetLogMessageLength() == testString.size());
-	CHECK(rlm.GetLogText() == testString);
-}
-
-TEST_CASE_METHOD(RemoteMessageTest, "TextTruncation", "RemoteMessageTest")
-{
-	// 104 Symbols
-	const std::string testString{ "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz" };
-	const std::string expectedResult{ testString.begin(), testString.begin() + RemoteLogMessage::GetMaxLogMessageLength() };
-
-	auto rlm = CreateLogMessage(testString);
-	VerifyMetaData(rlm);
-
-	CHECK(rlm.GetLogMessageLength() == expectedResult.size());
-}
-
-TEST_CASE_METHOD(RemoteMessageTest, "VariadicArguments", "RemoteMessageTest")
-{
-	std::tuple<std::int32_t, std::string, char> testTuple = std::make_tuple(123, "A string", 'x');
-	std::stringstream expectedResultStream;
-	expectedResultStream << "A " << std::get<0>(testTuple) << " variadic " << std::get<1>(testTuple) << " message " << std::get<2>(testTuple) << " for test";
-
-	auto rlm = CreateLogMessage("A % variadic % message % for test", std::get<0>(testTuple), std::get<1>(testTuple), std::get<2>(testTuple));
-	VerifyMetaData(rlm);
-
-	CHECK(expectedResultStream.str() == rlm.GetLogText());
-}
-
-TEST_CASE_METHOD(RemoteMessageTest, "NoKeyForArguments", "RemoteMessageTest")
+TEST_CASE_METHOD(RemoteMessageTest, "catch2_NoKeyForArguments", "[RemoteMessageTest]")
 {
 	std::tuple<std::int32_t, std::string, char> testTuple = std::make_tuple(123, "A string", 'x');
 	std::string format{ "A format without percents" };
@@ -65,7 +30,7 @@ TEST_CASE_METHOD(RemoteMessageTest, "NoKeyForArguments", "RemoteMessageTest")
 	CHECK(std::string{ rlm.GetLogText() } == std::string{});
 }
 
-TEST_CASE_METHOD(RemoteMessageTest, "IncompatibleKeys", "RemoteMessageTest")
+TEST_CASE_METHOD(RemoteMessageTest, "catch2_IncompatibleKeys", "[RemoteMessageTest]")
 {
 	// More arguments than keys
 	std::tuple<std::int32_t, std::string, char> testTuple = std::make_tuple(123, "A string", 'x');
