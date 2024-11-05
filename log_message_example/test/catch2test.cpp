@@ -25,7 +25,8 @@ private:
 		RemoteLogMessage::LogLevel::DebugLevel };
 };
 
-TEST_CASE_METHOD(RemoteMessageTest, "catch2_NoKeyForArgs", "[RemoteMsg]")
+TEST_CASE_METHOD(RemoteMessageTest, 
+	"catch2_NoKeyForArgs", "[RMsg]")
 {
 	std::tuple<std::int32_t, std::string, char> testTuple = 
 		std::make_tuple(123, "A string", 'x');
@@ -35,20 +36,23 @@ TEST_CASE_METHOD(RemoteMessageTest, "catch2_NoKeyForArgs", "[RemoteMsg]")
 	CHECK(std::string{ rlm.GetLogText() } == std::string{});
 }
 
-TEST_CASE_METHOD(RemoteMessageTest, "catch2_IncompatibleKeys", "[RemoteMsg]")
+TEST_CASE_METHOD(RemoteMessageTest, 
+	"catch2_IncompatibleKeys", "[RMsg]")
 {
 	// More arguments than keys
 	std::tuple<std::int32_t, std::string, char> testTuple = 
 		std::make_tuple(123, "A string", 'x');
 	{
-		std::string format{ "A format % with 2 % percents and 3 args" };
+		std::string format{ 
+			"A format % with 2 % percents and 3 args" };
 		auto rlm = CreateLogMessage(format, std::get<0>(testTuple), 
 			std::get<1>(testTuple), std::get<2>(testTuple));
 		CHECK(std::string{ rlm.GetLogText() } == std::string{});
 	}
 	// More keys than arguments
 	{
-		std::string format{ "A format % with 4 % percents and % 3 args %" };
+		std::string format{ 
+			"A format % with 4 % percents and % 3 args %" };
 		auto rlm = CreateLogMessage(format, std::get<0>(testTuple), 
 		std::get<1>(testTuple), std::get<2>(testTuple));
 		CHECK(std::string{ rlm.GetLogText() } == std::string{});

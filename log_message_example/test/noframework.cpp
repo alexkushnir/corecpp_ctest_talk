@@ -27,7 +27,8 @@ static void VerifyMetaData(const RemoteLogMessage& _message)
 
 static void RemoteMessageTest_NoArguments()
 {
-	const std::string testString{ "This is a test message without arguments" };
+	const std::string testString{ 
+        "This is a test message without arguments" };
 		
 	auto rlm = CreateLogMessage(testString);
 	VerifyMetaData(rlm);
