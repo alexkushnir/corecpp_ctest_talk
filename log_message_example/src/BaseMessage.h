@@ -22,10 +22,10 @@ enum class DataType : uint8_t
 
 enum class CommandType : uint16_t
 {
-    G = 0,  // Get
-    S = 1,  // Set
-    R = 2,  // Response
-    N = 3,  // Notify
+    G = 0,  
+    S = 1,  
+    R = 2,  
+    N = 3,  
     UNKNOWN = std::numeric_limits<std::uint16_t>::max()
 };
 
@@ -46,7 +46,7 @@ struct MessageHeader
     std::uint32_t 	 magicNumber1{ 0x12345678 };
     std::uint32_t  	 magicNumber2{ 0x87654321 };
     MessageExtension extension;
-    std::uint32_t 	 messageLength; // Length of message  in bytes not including MessageHeader
+    std::uint32_t 	 messageLength; 
     std::uint32_t	 messageUniqueId;
 };
 
@@ -61,8 +61,8 @@ struct MessageContent
     MessageSubject 		subject;
     MessageAttribute   	attribute;
     std::uint8_t   		index;
-    DataType       		dataType;   // See MSG_SIZE_OF_GET_TYPE_CONTENT
-    std::uint32_t  		dataLength { 0 }; // See MSG_SIZE_OF_GET_TYPE_CONTENT
+    DataType       		dataType;   
+    std::uint32_t  		dataLength { 0 }; 
 };
 
 class Message
@@ -105,9 +105,15 @@ public:
 
     MessageSubject GetSubject() const { return m_content.subject; }
     MessageAttribute GetAttribute() const { return m_content.attribute; }
-    void SetAttribute(const MessageAttribute _attribute) { m_content.attribute = _attribute; }
+    void SetAttribute(const MessageAttribute _attribute) {
+
+        m_content.attribute = _attribute; 
+    }
     CommandType GetCommand() const { return m_contentHeader.commandType; }
-    void SetCommand(const CommandType _command) { m_contentHeader.commandType = _command; }
+    void SetCommand(const CommandType _command) 
+    { 
+        m_contentHeader.commandType = _command; 
+    }
 
 protected:
     MessageHeader 		 m_header{};
@@ -116,7 +122,10 @@ protected:
 
 private:
     std::uint32_t GetMetaDataLength() { return sizeof(Message);}
-    std::uint32_t GetMetaDataLengthWithoutHeader() { return sizeof(Message) - sizeof(MessageHeader);}
+    std::uint32_t GetMetaDataLengthWithoutHeader() 
+    { 
+        return sizeof(Message) - sizeof(MessageHeader);
+    }
 };
 
 

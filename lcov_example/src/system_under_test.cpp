@@ -1,6 +1,7 @@
 #include "system_under_test.h"
 
-SystemUnderTest::SystemUnderTest(const bool bool_flag, const std::size_t container_size)
+SystemUnderTest::SystemUnderTest(const bool bool_flag, 
+    const std::size_t container_size)
     : m_container(container_size)
 {
     auto idx = 0;

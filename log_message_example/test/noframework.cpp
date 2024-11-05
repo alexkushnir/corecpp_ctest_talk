@@ -5,17 +5,21 @@
 #include <string>
 
 static constexpr std::int32_t g_messageId{ 10 };
-static constexpr RemoteLogMessage::LogLevel g_logLevel{ RemoteLogMessage::LogLevel::DebugLevel };
+static constexpr RemoteLogMessage::LogLevel g_logLevel{ 
+    RemoteLogMessage::LogLevel::DebugLevel };
 
 template<class ...Args>
-static RemoteLogMessage CreateLogMessage(const std::string& _format, Args&&... _args)
+static RemoteLogMessage CreateLogMessage(const std::string& _format, 
+    Args&&... _args)
 {
-    return RemoteLogMessage{ g_messageId, g_logLevel, _format, std::forward<Args>(_args)... };
+    return RemoteLogMessage{ g_messageId, g_logLevel, _format, 
+        std::forward<Args>(_args)... };
 }
 
 static void VerifyMetaData(const RemoteLogMessage& _message)
 {
-    if (_message.GetMessageID() != g_messageId || _message.GetLogLevel() != g_logLevel)
+    if (_message.GetMessageID() != g_messageId || 
+        _message.GetLogLevel() != g_logLevel)
     {
         std::exit(1);
     }
@@ -42,7 +46,8 @@ static void RemoteMessageTest_EmptyMessage()
 	auto rlm = CreateLogMessage(testString);
 	VerifyMetaData(rlm);
 
-	if (rlm.GetLogMessageLength() != testString.size() || rlm.GetLogText() != testString)
+	if (rlm.GetLogMessageLength() != testString.size() || 
+        rlm.GetLogText() != testString)
     {
         std::exit(1);
     }
@@ -50,7 +55,8 @@ static void RemoteMessageTest_EmptyMessage()
 
 static auto GetParsedOptions(int argc, char** argv)
 {
-    cxxopts::Options options("no-frameworks-test", "CTest unit tests with no framework");
+    cxxopts::Options options("no-frameworks-test", 
+        "CTest unit tests with no framework");
     options.add_options()
     ("n, no-arguments", "Run RemoteMessageTest_NoArguments test") 
     ("e, empty-message", "Run RemoteMessageTest_EmptyMessage test")

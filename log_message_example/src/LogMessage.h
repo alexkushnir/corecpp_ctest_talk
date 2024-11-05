@@ -43,30 +43,42 @@ public:
 		}
 		else
 		{
-			m_numberOfElementsToRead = (str.size() < MAX_LOG_MESSAGE_LENGTH - 1) ? static_cast<std::int32_t>(str.size() + 1) : MAX_LOG_MESSAGE_LENGTH;
+			m_numberOfElementsToRead = (str.size() < MAX_LOG_MESSAGE_LENGTH - 1) 
+				? static_cast<std::int32_t>(str.size() + 1) 
+				: MAX_LOG_MESSAGE_LENGTH;
 		}
 		
 		std::memcpy(m_logData, str.c_str(), m_numberOfElementsToRead);
 
-		SetDataLength(static_cast<std::uint32_t>(sizeof(m_messageType) + sizeof(m_messageID) + sizeof(m_numberOfElementsToRead) + sizeof(m_logData)));
+		SetDataLength(static_cast<std::uint32_t>(sizeof(m_messageType) + 
+			sizeof(m_messageID) + sizeof(m_numberOfElementsToRead) + 
+			sizeof(m_logData)));
 	}
 
 	~RemoteLogMessage() = default;
 
 	std::int32_t GetMessageID() const { return m_messageID; }
 	LogLevel GetLogLevel() const { return m_messageType; }
-	std::string GetLogText() { return std::string{ reinterpret_cast<char*>(m_logData) }; }
-	std::int32_t GetLogMessageLength() const { return m_numberOfElementsToRead; }
-	static std::size_t GetMaxLogMessageLength() { return MAX_LOG_MESSAGE_LENGTH; }
+	std::string GetLogText() { 
+		return std::string{ reinterpret_cast<char*>(m_logData) }; 
+	}
+	std::int32_t GetLogMessageLength() const { 
+		return m_numberOfElementsToRead; 
+	}
+	static std::size_t GetMaxLogMessageLength() { 
+		return MAX_LOG_MESSAGE_LENGTH; 
+	}
 
 private:
 	template<class Tuple, std::size_t N>
 	struct TuplePrinter
 	{
-		static void Print(const std::string& _format, std::ostream& _os, const Tuple& _t)
+		static void Print(const std::string& _format, std::ostream& _os, 
+			const Tuple& _t)
 		{
 			const size_t idx = _format.find_last_of(VARIABLE_KEY);
-			TuplePrinter<Tuple, N - 1>::Print(std::string(_format, 0, idx), _os, _t);
+			TuplePrinter<Tuple, N - 1>::Print(
+				std::string(_format, 0, idx), _os, _t);
 			_os << std::get<N - 1>(_t) << std::string(_format, idx + 1);
 		}
 	};
@@ -74,10 +86,12 @@ private:
 	template<class Tuple>
 	struct TuplePrinter<Tuple, 1>
 	{
-		static void Print(const std::string& _format, std::ostream& _os, const Tuple& _t)
+		static void Print(const std::string& _format, std::ostream& _os, 
+			const Tuple& _t)
 		{
 			const size_t idx = _format.find_first_of(VARIABLE_KEY);
-			_os << std::string(_format, 0, idx) << std::get<0>(_t) << std::string(_format, idx + 1);
+			_os << std::string(_format, 0, idx) << std::get<0>(_t) << 
+				std::string(_format, idx + 1);
 		}
 	};
 
@@ -97,7 +111,8 @@ private:
 				if (_format.find_last_of(VARIABLE_KEY) != _format.npos)
 				{
 					const auto t = std::make_tuple(std::forward<Args>(_args)...);
-					TuplePrinter<decltype(t), sizeof...(Args)>::Print(_format, ss, t);
+					TuplePrinter<decltype(t), sizeof...(Args)>::Print(_format, 
+						ss, t);
 				}
 			}
 		}
@@ -107,7 +122,8 @@ private:
 
 	bool IsFormatValid(const std::string& _format, int _numberOfArguments)
 	{
-		return(std::count(_format.begin(), _format.end(), VARIABLE_KEY) == _numberOfArguments);
+		return(std::count(_format.begin(), _format.end(), VARIABLE_KEY) == 
+			_numberOfArguments);
 	}
 
 	LogLevel m_messageType{ LogLevel::UNKNOWN };
