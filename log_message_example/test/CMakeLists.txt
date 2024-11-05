@@ -1,17 +1,20 @@
 set(PROJ_NAME "remote-log-test")
 project(${PROJ_NAME})
 
-set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin/${CMAKE_BUILD_TYPE}")
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY 
+    "${CMAKE_BINARY_DIR}/bin/${CMAKE_BUILD_TYPE}")
 
 # Tests without testing framework
 set (NOFRAMEWORK_TARGET noframework-${PROJ_NAME})
 
 include(CTest)
+
 include(FetchContent)
 
 # For command line parsing
 FetchContent_Declare(cxxopts 
-    GIT_REPOSITORY https://github.com/jarro2783/cxxopts.git GIT_TAG master)
+    GIT_REPOSITORY https://github.com/jarro2783/cxxopts.git 
+    GIT_TAG master)
 FetchContent_MakeAvailable(cxxopts)
 
 enable_testing()
